@@ -1,0 +1,43 @@
+{
+  "accuracy": 0.9735349716446124,
+  "precision": 0.9541284403669725,
+  "recall": 0.9203539823008849,
+  "f1": 0.9369369369369369,
+  "roc_auc": 0.9916822668481959,
+  "pr_auc": 0.9779712295834624,
+  "confusion_matrix": [
+    [
+      411,
+      5
+    ],
+    [
+      9,
+      104
+    ]
+  ],
+  "threshold": 0.545,
+  "train_rows": 1594,
+  "test_rows": 529,
+  "features": [
+    "channel",
+    "sampling",
+    "duration",
+    "len",
+    "mean",
+    "var",
+    "std",
+    "kurtosis",
+    "skew",
+    "n_peaks",
+    "smooth10_n_peaks",
+    "smooth20_n_peaks",
+    "diff_peaks",
+    "diff2_peaks",
+    "diff_var",
+    "diff2_var",
+    "gaps_squared",
+    "len_weighted",
+    "var_div_duration",
+    "var_div_len"
+  ]
+}
