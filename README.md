@@ -1,21 +1,70 @@
+<div align="center">
+  <img src="assets/banner.svg" alt="Telemetry Anomaly Monitor" width="100%" />
+</div>
+
+<br/>
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Python-3-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/scikit--learn-ExtraTrees-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" alt="scikit-learn" />
+  <img src="https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit" />
+  <img src="https://img.shields.io/badge/Flask-Web%20%26%20API-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
+  <img src="https://img.shields.io/badge/Jupyter-Notebook-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter" />
+</div>
+
+<p align="center">
+  <a href="#-dataset">Dataset</a> ·
+  <a href="#-model-design">Model</a> ·
+  <a href="#-evaluation-on-official-holdout">Results</a> ·
+  <a href="#-run-locally">Run it</a> ·
+  <a href="#-api-example">API</a>
+</p>
+
+---
+
 # Telemetry Anomaly Monitor
 
-A complete machine-learning project built from the supplied telemetry dataset. It provides:
+A complete machine-learning project built from the supplied telemetry dataset.
 
-- Reproducible ML training with the dataset's official `train`/`test` split.
-- ExtraTrees supervised anomaly classifier.
-- Validation-selected probability threshold.
-- Optional Isolation Forest for unlabeled/out-of-distribution scoring.
-- Streamlit dashboard for interactive exploration and batch CSV scoring.
-- Flask web application and JSON API.
-- Jupyter notebook containing the end-to-end analysis and training workflow.
-- Detailed technical report in Markdown and PDF.
+## 🎁 What's Inside
 
-## Dataset
+| | |
+|---|---|
+| 🔁 **Reproducible training** | Uses the dataset's official `train`/`test` split |
+| 🌲 **ExtraTrees classifier** | Supervised anomaly detection |
+| 🎚️ **Validation-selected threshold** | Probability cutoff chosen on a validation subset |
+| 🧭 **Isolation Forest** | Optional, for unlabeled or out-of-distribution scoring |
+| 📊 **Streamlit dashboard** | Interactive exploration and batch CSV scoring |
+| 🌐 **Flask web app and JSON API** | Score a segment from the browser or from code |
+| 📓 **Jupyter notebook** | End-to-end analysis and training workflow |
+| 📄 **Technical report** | Detailed write-up in Markdown and PDF |
+
+## 🗂️ Dataset
+
+<div align="center">
+
+| 🧩 Segments | 🔢 Model features | 📡 Channels | 📈 Signal rows | 🎯 Target |
+|:---:|:---:|:---:|:---:|:---:|
+| **2,123** | **20** | **9** | **303,493** | **Binary anomaly** |
+
+</div>
 
 The supplied `dataset.csv` contains 2,123 telemetry segments, 20 model input features after excluding identifiers/labels, 9 channels, and a binary anomaly target. `segments.csv` contains the underlying 303,493 signal rows.
 
-## Model design
+## 🧠 Model Design
+
+```text
+Telemetry features (20)
+        |
+        v
+ExtraTreesClassifier  (500 trees, min leaf 2, balanced class weights)
+        |
+        v
+Anomaly probability
+        |
+        v
+Validation-selected threshold (max F1)  -->  Normal / Anomaly
+```
 
 **Primary model:** ExtraTreesClassifier with 500 trees, minimum leaf size 2, and balanced class weights.
 
@@ -23,19 +72,39 @@ The supplied `dataset.csv` contains 2,123 telemetry segments, 20 model input fea
 
 **Secondary detector:** Isolation Forest, useful when labels are unavailable.
 
-## Evaluation on official holdout
+## 🏆 Evaluation on Official Holdout
 
-- Accuracy: **0.9735**
-- Precision: **0.9541**
-- Recall: **0.9204**
-- F1: **0.9369**
-- ROC-AUC: **0.9917**
-- PR-AUC: **0.9780**
-- Confusion matrix: `[[411, 5], [9, 104]]`
+<div align="center">
+  <img src="https://img.shields.io/badge/Accuracy-0.9735-5127D8?style=for-the-badge" alt="Accuracy 0.9735" />
+  <img src="https://img.shields.io/badge/Precision-0.9541-8F6BFF?style=for-the-badge" alt="Precision 0.9541" />
+  <img src="https://img.shields.io/badge/Recall-0.9204-FF8CB5?style=for-the-badge" alt="Recall 0.9204" />
+  <br/>
+  <img src="https://img.shields.io/badge/F1-0.9369-5127D8?style=for-the-badge" alt="F1 0.9369" />
+  <img src="https://img.shields.io/badge/ROC--AUC-0.9917-8F6BFF?style=for-the-badge" alt="ROC-AUC 0.9917" />
+  <img src="https://img.shields.io/badge/PR--AUC-0.9780-FF8CB5?style=for-the-badge" alt="PR-AUC 0.9780" />
+</div>
 
-These are measurements on this supplied dataset and should not be interpreted as production spacecraft performance.
+<br/>
 
-## Run locally
+| Metric | Value |
+|---|---|
+| Accuracy | **0.9735** |
+| Precision | **0.9541** |
+| Recall | **0.9204** |
+| F1 | **0.9369** |
+| ROC-AUC | **0.9917** |
+| PR-AUC | **0.9780** |
+
+**Confusion matrix:** `[[411, 5], [9, 104]]`
+
+| | Predicted normal | Predicted anomaly |
+|---|:---:|:---:|
+| **Actual normal** | ✅ 411 | ❌ 5 |
+| **Actual anomaly** | ❌ 9 | ✅ 104 |
+
+> These are measurements on this supplied dataset and should not be interpreted as production spacecraft performance.
+
+## 🚀 Run Locally
 
 ```bash
 pip install -r requirements.txt
@@ -51,7 +120,7 @@ python app_flask.py
 
 Open `http://127.0.0.1:5000`.
 
-## API example
+## 🔌 API Example
 
 POST JSON to `/predict`:
 
@@ -80,10 +149,12 @@ POST JSON to `/predict`:
 }
 ```
 
-## Project structure
+## 📁 Project Structure
 
 ```text
 telemetry_anomaly_project/
+├── assets/
+│   └── banner.svg
 ├── app_streamlit.py
 ├── app_flask.py
 ├── README.md
@@ -105,3 +176,9 @@ telemetry_anomaly_project/
     ├── index.html
     └── result.html
 ```
+
+<br/>
+
+<div align="center">
+  <sub>Built with scikit-learn, Streamlit and Flask.</sub>
+</div>
