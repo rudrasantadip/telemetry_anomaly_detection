@@ -1,3 +1,5 @@
+# Telemetry Anomaly Monitor
+
 <div align="center">
   <img src="assets/banner.svg" alt="Telemetry Anomaly Monitor" width="100%" />
 </div>
@@ -13,66 +15,64 @@
 </div>
 
 <p align="center">
-  <a href="#-dataset">Dataset</a> ·
-  <a href="#-model-design">Model</a> ·
-  <a href="#-evaluation-on-official-holdout">Results</a> ·
-  <a href="#-run-locally">Run it</a> ·
-  <a href="#-api-example">API</a>
+  <a href="#dataset">Dataset</a> ·
+  <a href="#model-design">Model</a> ·
+  <a href="#evaluation-on-official-holdout">Results</a> ·
+  <a href="#run-locally">Run it</a> ·
+  <a href="#api-example">API</a>
 </p>
 
 ---
 
-# Telemetry Anomaly Monitor
-
 A complete machine-learning project built from the supplied telemetry dataset.
 
-## 🎁 What's Inside
+## What's Inside
 
-| | |
+| Component | Description |
 |---|---|
-| 🔁 **Reproducible training** | Uses the dataset's official `train`/`test` split |
-| 🌲 **ExtraTrees classifier** | Supervised anomaly detection |
-| 🎚️ **Validation-selected threshold** | Probability cutoff chosen on a validation subset |
-| 🧭 **Isolation Forest** | Optional, for unlabeled or out-of-distribution scoring |
-| 📊 **Streamlit dashboard** | Interactive exploration and batch CSV scoring |
-| 🌐 **Flask web app and JSON API** | Score a segment from the browser or from code |
-| 📓 **Jupyter notebook** | End-to-end analysis and training workflow |
-| 📄 **Technical report** | Detailed write-up in Markdown and PDF |
+| **Reproducible training** | Uses the dataset's official `train`/`test` split |
+| **ExtraTrees classifier** | Supervised anomaly detection |
+| **Validation-selected threshold** | Probability cutoff chosen on a validation subset |
+| **Isolation Forest** | Optional, for unlabeled or out-of-distribution scoring |
+| **Streamlit dashboard** | Interactive exploration and batch CSV scoring |
+| **Flask web app and JSON API** | Score a segment from the browser or from code |
+| **Jupyter notebook** | End-to-end analysis and training workflow |
+| **Technical report** | Detailed write-up in Markdown and PDF |
 
-## 🗂️ Dataset
+## Dataset
 
 <div align="center">
 
-| 🧩 Segments | 🔢 Model features | 📡 Channels | 📈 Signal rows | 🎯 Target |
+| Segments | Model features | Channels | Signal rows | Target |
 |:---:|:---:|:---:|:---:|:---:|
 | **2,123** | **20** | **9** | **303,493** | **Binary anomaly** |
 
 </div>
 
-The supplied `dataset.csv` contains 2,123 telemetry segments, 20 model input features after excluding identifiers/labels, 9 channels, and a binary anomaly target. `segments.csv` contains the underlying 303,493 signal rows.
+The supplied `dataset.csv` contains 2,123 telemetry segments, 20 model input features after excluding identifiers and labels, 9 channels, and a binary anomaly target. `segments.csv` contains the underlying 303,493 signal rows.
 
-## 🧠 Model Design
+## Model Design
 
 ```text
 Telemetry features (20)
         |
         v
-ExtraTreesClassifier  (500 trees, min leaf 2, balanced class weights)
+ExtraTreesClassifier (500 trees, min leaf 2, balanced class weights)
         |
         v
 Anomaly probability
         |
         v
-Validation-selected threshold (max F1)  -->  Normal / Anomaly
+Validation-selected threshold (max F1) --> Normal / Anomaly
 ```
 
 **Primary model:** ExtraTreesClassifier with 500 trees, minimum leaf size 2, and balanced class weights.
 
-**Threshold:** selected on a stratified validation subset of the official training data by maximizing F1, then the final model is refit on all official training rows.
+**Threshold:** Selected on a stratified validation subset of the official training data by maximizing F1, then the final model is refit on all official training rows.
 
 **Secondary detector:** Isolation Forest, useful when labels are unavailable.
 
-## 🏆 Evaluation on Official Holdout
+## Evaluation on Official Holdout
 
 <div align="center">
   <img src="https://img.shields.io/badge/Accuracy-0.9735-5127D8?style=for-the-badge" alt="Accuracy 0.9735" />
@@ -87,7 +87,7 @@ Validation-selected threshold (max F1)  -->  Normal / Anomaly
 <br/>
 
 | Metric | Value |
-|---|---|
+|---|---:|
 | Accuracy | **0.9735** |
 | Precision | **0.9541** |
 | Recall | **0.9204** |
@@ -99,12 +99,12 @@ Validation-selected threshold (max F1)  -->  Normal / Anomaly
 
 | | Predicted normal | Predicted anomaly |
 |---|:---:|:---:|
-| **Actual normal** | ✅ 411 | ❌ 5 |
-| **Actual anomaly** | ❌ 9 | ✅ 104 |
+| **Actual normal** | 411 | 5 |
+| **Actual anomaly** | 9 | 104 |
 
 > These are measurements on this supplied dataset and should not be interpreted as production spacecraft performance.
 
-## 🚀 Run Locally
+## Run Locally
 
 ```bash
 pip install -r requirements.txt
@@ -120,7 +120,7 @@ python app_flask.py
 
 Open `http://127.0.0.1:5000`.
 
-## 🔌 API Example
+## API Example
 
 POST JSON to `/predict`:
 
@@ -149,7 +149,7 @@ POST JSON to `/predict`:
 }
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 telemetry_anomaly_project/
